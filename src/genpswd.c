@@ -14,9 +14,9 @@ enum CharType {
 };
 
 struct StrType {
-    int ctype;
-    int weight;
-    char *s;
+    int ctype; // 字種
+    int weight; // 出現の重み
+    char *s; // 文字列
 };
 
 
@@ -29,15 +29,16 @@ struct StrType stype[] = {
 };
 
 int main(int argc, char *argv[]) {
-    int num = 8;
-    char buf[1024];
+    int num = 8; // 生成文字数
+    char buf[1024]; // 候補文字
 
     if (argc >= 2) {
         num = atol(argv[1]);
     }
 
-    srand(time(NULL) + getpid());
+    srand(time(NULL));
 
+    // 候補文字生成
     buf[0] = '\0';
     for (int i = 0 ; stype[i].ctype != C_END ; i ++) {
         for (int j = 0; j < stype[i].weight; j++) {
@@ -45,7 +46,20 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    int len = strlen(buf);
+    int len = strlen(buf); // 候補文字列長
+
+    // プロセスID回分のシャッフル
+    for (int i = 0; i < getpid(); i++) {
+        int pos1 = rand() % len;
+        int pos2 = rand() % len;
+        if (pos1 != pos1) {
+            char tmp = buf[pos1];
+            buf[pos1] = buf[pos2];
+            buf[pos2] = tmp;
+        }
+    }
+
+    // ランダムに文字を生成
     while (num--) {
         int pos = rand() % len;
         putchar(buf[pos]);
