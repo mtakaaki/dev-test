@@ -11,17 +11,26 @@
 /* 候補文字のワークバッファのサイズ */
 #define MAXBUF 1000
 
+enum CharType {
+    CTYPE_NONE,
+    CTYPE_NUMBER,
+    CTYPE_LOWER,
+    CTYPE_UPPER,
+    CTYPE_SYMBOL
+};
+
 struct StrType {
+    enum CharType ctype;
     int weight; // 出現の重み
     char *s; // 文字列
 };
 
 struct StrType stype[] = {
-    {3, "1234567890"},
-    {2, "abcdefghijklmnopqrstuvwxyz"},
-    {2, "ABCDEFGHIJKLMNOPQRSTUVWXYZ"},
-    {1, "!\"#$%&'()-^\\=~|@[;:],./`{+*}<>?_"},
-    {-1, ""}
+    {CTYPE_NUMBER, 3, "1234567890"},
+    {CTYPE_LOWER, 2, "abcdefghijklmnopqrstuvwxyz"},
+    {CTYPE_UPPER, 2, "ABCDEFGHIJKLMNOPQRSTUVWXYZ"},
+    {CTYPE_SYMBOL, 1, "!\"#$%&'()-^\\=~|@[;:],./`{+*}<>?_"},
+    {CTYPE_NONE, -1, ""}
 };
 
 int main(int argc, char *argv[]) {
@@ -58,7 +67,7 @@ int main(int argc, char *argv[]) {
     for (int i = 0; i < getpid(); i++) {
         int pos1 = rand() % len;
         int pos2 = rand() % len;
-        if (pos1 != pos1) {
+        if (pos1 != pos2) {
             char tmp = buf[pos1];
             buf[pos1] = buf[pos2];
             buf[pos2] = tmp;
