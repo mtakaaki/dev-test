@@ -5,33 +5,48 @@
 #include <sys/types.h>
 #include <unistd.h>
 
+/* 省略時の文字数 */
+#define DEFAULT_NUM 8
+
+/* 候補文字のワークバッファのサイズ */
+#define MAXBUF 1000
+
 struct StrType {
     int weight; // 出現の重み
     char *s; // 文字列
 };
 
-
 struct StrType stype[] = {
-    {2, "1234567890"},
+    {3, "1234567890"},
     {2, "abcdefghijklmnopqrstuvwxyz"},
     {2, "ABCDEFGHIJKLMNOPQRSTUVWXYZ"},
-    {1, "!\"#$%&'()@`+*<>?_\\{}[]=~|.,"},
+    {1, "!\"#$%&'()-^\\=~|@[;:],./`{+*}<>?_"},
     {-1, ""}
 };
 
 int main(int argc, char *argv[]) {
-    int num = 8; // 生成文字数
-    char buf[1024]; // 候補文字
+    int num = DEFAULT_NUM; // 生成文字数
+    char buf[MAXBUF]; // 候補文字
 
     if (argc >= 2) {
         num = atol(argv[1]);
     }
+    if (num <= 0) {
+        fprintf(stderr, "%s [Number>0]\n", argv[0]);
+        exit(-1);
+    }
 
+    // 乱数初期化
     srand(time(NULL));
 
     // 候補文字生成
     buf[0] = '\0';
     for (int i = 0 ; stype[i].weight >= 0 ; i++) {
+        if (strlen(buf) + strlen(stype[i].s) * stype[i].weight > MAXBUF) {
+            fputs("Not enough buf\n", stderr);
+            exit(-1);
+        }
+
         for (int j = 0; j < stype[i].weight; j++) {
             strcat(buf,stype[i].s);
         }
@@ -55,6 +70,7 @@ int main(int argc, char *argv[]) {
         int pos = rand() % len;
         putchar(buf[pos]);
     }
+    putchar('\n');
 
     return 0;
 }
