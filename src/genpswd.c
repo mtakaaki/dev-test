@@ -5,27 +5,18 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-enum CharType {
-    C_NUMERIC, 
-    C_LOWERCASE,
-    C_UPPERCASE,
-    C_SYMBOL,
-    C_END
-};
-
 struct StrType {
-    int ctype; // 字種
     int weight; // 出現の重み
     char *s; // 文字列
 };
 
 
 struct StrType stype[] = {
-    {C_NUMERIC,   2, "1234567890"},
-    {C_LOWERCASE, 2, "abcdefghijklmnopqrstuvwxyz"},
-    {C_UPPERCASE, 2, "ABCDEFGHIJKLMNOPQRSTUVWXYZ"},
-    {C_SYMBOL, 1, "!\"#$%&'()@`+*<>?_\\{}[]=~|.,"},
-    {C_END, 0, ""}
+    {2, "1234567890"},
+    {2, "abcdefghijklmnopqrstuvwxyz"},
+    {2, "ABCDEFGHIJKLMNOPQRSTUVWXYZ"},
+    {1, "!\"#$%&'()@`+*<>?_\\{}[]=~|.,"},
+    {-1, ""}
 };
 
 int main(int argc, char *argv[]) {
@@ -40,7 +31,7 @@ int main(int argc, char *argv[]) {
 
     // 候補文字生成
     buf[0] = '\0';
-    for (int i = 0 ; stype[i].ctype != C_END ; i ++) {
+    for (int i = 0 ; stype[i].weight >= 0 ; i++) {
         for (int j = 0; j < stype[i].weight; j++) {
             strcat(buf,stype[i].s);
         }
