@@ -62,4 +62,11 @@ hi DiffChange ctermfg=black ctermbg=3
 hi DiffDelete ctermfg=black ctermbg=6
 hi DiffText   ctermfg=black ctermbg=7
 
+"Unite
+noremap <C-u><C-b> :Unite buffer -direction=botright<CR>
+noremap <C-u><C-f> :UniteWithBufferDir -buffer-name=files file -direction=botright<CR>
+noremap <C-U><C-R> :Unite file_mru<CR>
+noremap <C-U><C-Y> :Unite -buffer-name=register register<CR>
+noremap <C-U><C-U> :Unite buffer file_mru<CR>
+noremap <C-U><C-A> :Unite UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file<CR>
 
