@@ -70,3 +70,15 @@ noremap <C-U><C-Y> :Unite -buffer-name=register register<CR>
 noremap <C-U><C-U> :Unite buffer file_mru<CR>
 noremap <C-U><C-A> :Unite UniteWithBufferDir -buffer-name=files buffer file_mru bookmark file<CR>
 
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#rc()
+filetype plugin indent on
+Bundle 'violetyk/cake.vim'
+Bundle 'unite.vim'
+
+let g:cakephp_view_exts = [".tpl"]
+set hlsearch
+nmap <Esc><Esc> :nohlsearch<CR><Esc>
+inoremap {<Enter> {}<Left><CR><ESC><S-o>
+inoremap [<Enter> []<Left><CR><ESC><S-o>
+inoremap (<Enter> ()<Left><CR><ESC><S-o>
